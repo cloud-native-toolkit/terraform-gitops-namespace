@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 REPO="$1"
-PATH="$2"
+REPO_PATH="$2"
 NAMESPACE="$3"
 
-echo "Path: ${PATH}"
+echo "Path: ${REPO_PATH}"
 
 REPO_DIR=".tmprepo-namespace-${NAMESPACE}"
 
@@ -17,9 +17,9 @@ git clone "https://${TOKEN}@${REPO}" "${REPO_DIR}"
 
 cd "${REPO_DIR}" || exit 1
 
-mkdir -p "${PATH}/namespaces"
+mkdir -p "${REPO_PATH}/namespaces"
 
-cat > "${PATH}/namespaces/${NAMESPACE}.yaml" <<EOL
+cat > "${REPO_PATH}/namespaces/${NAMESPACE}.yaml" <<EOL
 apiVersion: v1
 kind: Namespace
 metadata:

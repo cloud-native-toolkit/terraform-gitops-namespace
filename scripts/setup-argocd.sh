@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 REPO="$1"
-PATH="$2"
+REPO_PATH="$2"
 PROJECT="$3"
 APPLICATION_REPO="$4"
-APPLICATION_PATH="$5"
+APPLICATION_GIT_PATH="$5"
 NAMESPACE="$6"
 BRANCH="$7"
 
@@ -19,7 +19,7 @@ git clone "https://${TOKEN}@${REPO}" "${REPO_DIR}"
 
 cd "${REPO_DIR}" || exit 1
 
-cat > "${PATH}/namespaces.yaml" <<EOL
+cat > "${REPO_PATH}/namespaces.yaml" <<EOL
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -30,8 +30,8 @@ spec:
     server: "https://kubernetes.default.svc"
   project: ${PROJECT}
   source:
-    path: ${APPLICATION_PATH}
-    repoURL: ${APPLICATION_PATH}
+    path: ${APPLICATION_GIT_PATH}
+    repoURL: ${APPLICATION_GIT_PATH}
     targetRevision: ${BRANCH}
   syncPolicy:
     automated:
