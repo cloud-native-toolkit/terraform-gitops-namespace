@@ -4,6 +4,8 @@ REPO="$1"
 PATH="$2"
 NAMESPACE="$3"
 
+echo "Path: ${PATH}"
+
 REPO_DIR=".tmprepo-namespace-${NAMESPACE}"
 
 git config --global user.email "cloudnativetoolkit@gmail.com"
