@@ -18,6 +18,15 @@ variable "config_paths" {
   })
 }
 
+variable "config_projects" {
+  description = "The ArgoCD projects in the config repo"
+  type        = object({
+    infrastructure = string
+    services       = string
+    applications   = string
+  })
+}
+
 variable "application_repo" {
   type        = string
   description = "The repo that contains the application configuration"

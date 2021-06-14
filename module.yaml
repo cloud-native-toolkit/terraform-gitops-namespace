@@ -10,7 +10,7 @@ versions:
     - id: gitops
       refs:
         - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-          version: ">= 0.0.0"
+          version: ">= 1.1.0"
   variables:
     - name: config_repo
       moduleRef:
@@ -24,6 +24,10 @@ versions:
       moduleRef:
         id: gitops
         output: config_paths
+    - name: config_projects
+      moduleRef:
+        id: gitops
+        output: config_projects
     - name: application_repo
       moduleRef:
         id: gitops
