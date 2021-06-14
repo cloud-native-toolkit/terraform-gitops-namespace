@@ -31,7 +31,7 @@ spec:
   project: ${PROJECT}
   source:
     path: ${APPLICATION_GIT_PATH}
-    repoURL: ${APPLICATION_GIT_PATH}
+    repoURL: ${APPLICATION_REPO}
     targetRevision: ${BRANCH}
   syncPolicy:
     automated:
