@@ -8,6 +8,8 @@ APPLICATION_GIT_PATH="$5"
 NAMESPACE="$6"
 BRANCH="$7"
 
+APPLICATION_REPO_URL="https://${APPLICATION_REPO}"
+
 REPO_DIR=".tmprepo-namespace-${NAMESPACE}"
 
 git config --global user.email "cloudnativetoolkit@gmail.com"
@@ -31,7 +33,7 @@ spec:
   project: ${PROJECT}
   source:
     path: ${APPLICATION_GIT_PATH}
-    repoURL: ${APPLICATION_REPO}
+    repoURL: ${APPLICATION_REPO_URL}
     targetRevision: ${BRANCH}
   syncPolicy:
     automated:
