@@ -46,7 +46,7 @@ module "rbac" {
     verbs = ["*"]
   }, {
     apiGroups = [""]
-    resources = ["secrets", "configmaps", "serviceaccount", "services"]
+    resources = ["secrets", "configmaps", "serviceaccounts", "services"]
     verbs = ["*"]
   }, {
     apiGroups = ["route.openshift.io"]
