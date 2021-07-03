@@ -46,6 +46,16 @@ variable "application_paths" {
   })
 }
 
+variable "argocd_namespace" {
+  description = "The namespace where argocd has been deployed"
+  type        = string
+}
+
+variable "argocd_service_account" {
+  description = "The service account for argocd"
+  type        = string
+}
+
 variable "name" {
   type        = string
   description = "The value that should be used for the namespace"
