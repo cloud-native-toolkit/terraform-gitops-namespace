@@ -49,6 +49,10 @@ module "rbac" {
     resources = ["secrets", "configmaps", "serviceaccounts", "services"]
     verbs = ["*"]
   }, {
+    apiGroups = ["batch"]
+    resources = ["cronjobs","jobs"]
+    verbs = ["*"]
+  }, {
     apiGroups = ["route.openshift.io"]
     resources = ["routes"]
     verbs = ["*"]
