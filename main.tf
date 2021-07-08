@@ -58,3 +58,20 @@ module "rbac" {
     verbs = ["*"]
   }]
 }
+
+module "dev_config" {
+  source = "github.com/cloud-native-toolkit/terraform-gitops-dev-namespace.git"
+  depends_on = [null_resource.setup_argocd]
+
+  config_repo               = var.config_repo
+  config_token              = var.config_token
+  config_paths              = var.config_paths
+  config_projects           = var.config_projects
+  application_repo          = var.application_repo
+  application_token         = var.application_token
+  application_paths         = var.application_paths
+  service_account_namespace = var.argocd_namespace
+  service_account_name      = var.argocd_service_account
+  namespace                 = var.name
+  provision                 = var.dev
+}

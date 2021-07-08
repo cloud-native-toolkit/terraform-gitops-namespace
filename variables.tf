@@ -60,3 +60,9 @@ variable "name" {
   type        = string
   description = "The value that should be used for the namespace"
 }
+
+variable "dev" {
+  type        = bool
+  description = "Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)"
+  default     = false
+}
