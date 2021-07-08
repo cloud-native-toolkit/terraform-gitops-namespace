@@ -70,8 +70,6 @@ module "dev_config" {
   application_repo          = var.application_repo
   application_token         = var.application_token
   application_paths         = var.application_paths
-  service_account_namespace = var.argocd_namespace
-  service_account_name      = var.argocd_service_account
   namespace                 = var.name
   provision                 = var.dev
 }
