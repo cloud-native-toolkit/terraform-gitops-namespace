@@ -55,7 +55,7 @@ module "rbac" {
 
 module "dev_config" {
   source = "github.com/cloud-native-toolkit/terraform-gitops-dev-namespace.git"
-  depends_on = [null_resource.setup_gitops]
+  depends_on = [module.rbac]
 
   gitops_config             = var.gitops_config
   git_credentials           = var.git_credentials
