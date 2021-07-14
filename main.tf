@@ -27,7 +27,7 @@ resource null_resource setup_argocd {
 }
 
 module "rbac" {
-  source = "github.com/cloud-native-toolkit/terraform-gitops-rbac.git"
+  source = "github.com/cloud-native-toolkit/terraform-gitops-rbac.git?ref=v1.3.0"
   depends_on = [null_resource.setup_argocd]
 
   config_repo               = var.config_repo
@@ -60,7 +60,7 @@ module "rbac" {
 }
 
 module "dev_config" {
-  source = "github.com/cloud-native-toolkit/terraform-gitops-dev-namespace.git"
+  source = "github.com/cloud-native-toolkit/terraform-gitops-dev-namespace.git?ref=v1.1.0"
   depends_on = [null_resource.setup_argocd]
 
   config_repo               = var.config_repo
