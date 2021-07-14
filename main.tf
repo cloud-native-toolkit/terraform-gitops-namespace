@@ -19,7 +19,7 @@ resource null_resource setup_gitops {
     command = "${path.module}/scripts/setup-gitops.sh '${var.name}' '${local.yaml_dir}' 'namespaces' '${local.application_branch}' '${local.config_namespace}'"
 
     environment = {
-      GIT_CREDENTIALS = jsonencode(var.git_credentials)
+      GIT_CREDENTIALS = jsonencode(nonsensitive(var.git_credentials))
       GITOPS_CONFIG = jsonencode(local.layer_config)
     }
   }
