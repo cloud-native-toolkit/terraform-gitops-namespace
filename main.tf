@@ -1,42 +1,36 @@
 locals {
   layer = "infrastructure"
-  config_project = var.config_projects[local.layer]
+  layer_config = var.gitops_config[local.layer]
   application_branch = "main"
   config_namespace = "default"
+  yaml_dir = "${path.cwd}/.tmp/namespace-${var.name}"
 }
 
-resource null_resource setup_namespace {
+resource null_resource create_yaml {
   provisioner "local-exec" {
-    command = "${path.module}/scripts/setup-namespace.sh '${var.application_repo}' '${var.application_paths[local.layer]}' '${var.name}'"
-
-    environment = {
-      TOKEN = var.application_token
-    }
+    command = "${path.module}/scripts/create-yaml.sh '${local.yaml_dir}' '${var.name}'"
   }
 }
 
-resource null_resource setup_argocd {
-  depends_on = [null_resource.setup_namespace]
+resource null_resource setup_gitops {
+  depends_on = [null_resource.create_yaml]
+
   provisioner "local-exec" {
-    command = "${path.module}/scripts/setup-argocd.sh '${var.config_repo}' '${var.config_paths[local.layer]}' '${local.config_project}' '${var.application_repo}' '${var.application_paths[local.layer]}/namespaces' '${local.config_namespace}' '${local.application_branch}'"
+    command = "${path.module}/scripts/setup-gitops.sh '${var.name}' '${local.yaml_dir}' 'namespaces' '${local.application_branch}' '${local.config_namespace}'"
 
     environment = {
-      TOKEN = var.config_token
+      GIT_CREDENTIALS = jsonencode(var.git_credentials)
+      GITOPS_CONFIG = jsonencode(local.layer_config)
     }
   }
 }
 
 module "rbac" {
-  source = "github.com/cloud-native-toolkit/terraform-gitops-rbac.git?ref=v1.3.0"
-  depends_on = [null_resource.setup_argocd]
+  source = "github.com/cloud-native-toolkit/terraform-gitops-rbac.git"
+  depends_on = [null_resource.setup_gitops]
 
-  config_repo               = var.config_repo
-  config_token              = var.config_token
-  config_paths              = var.config_paths
-  config_projects           = var.config_projects
-  application_repo          = var.application_repo
-  application_token         = var.application_token
-  application_paths         = var.application_paths
+  gitops_config             = var.gitops_config
+  git_credentials           = var.git_credentials
   service_account_namespace = var.argocd_namespace
   service_account_name      = var.argocd_service_account
   namespace                 = var.name
@@ -60,16 +54,11 @@ module "rbac" {
 }
 
 module "dev_config" {
-  source = "github.com/cloud-native-toolkit/terraform-gitops-dev-namespace.git?ref=v1.1.0"
-  depends_on = [null_resource.setup_argocd]
+  source = "github.com/cloud-native-toolkit/terraform-gitops-dev-namespace.git"
+  depends_on = [null_resource.setup_gitops]
 
-  config_repo               = var.config_repo
-  config_token              = var.config_token
-  config_paths              = var.config_paths
-  config_projects           = var.config_projects
-  application_repo          = var.application_repo
-  application_token         = var.application_token
-  application_paths         = var.application_paths
+  gitops_config             = var.gitops_config
+  git_credentials           = var.git_credentials
   namespace                 = var.name
   provision                 = var.dev
 }

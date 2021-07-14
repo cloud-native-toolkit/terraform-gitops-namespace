@@ -1,40 +1,15 @@
 #!/usr/bin/env bash
 
-REPO="$1"
-REPO_PATH="$2"
-PROJECT="$3"
-APPLICATION_REPO="$4"
-APPLICATION_GIT_PATH="$5"
-NAMESPACE="$6"
-BRANCH="$7"
+NAME="$1"
+REPO="$2"
+REPO_PATH="$3"
+PROJECT="$4"
+APPLICATION_REPO="$5"
+APPLICATION_GIT_PATH="$6"
+NAMESPACE="$7"
+BRANCH="$8"
 
-REPO_DIR=".tmprepo-namespace-${NAMESPACE}"
-
-SEMAPHORE="${REPO//\//-}.semaphore"
-
-while true; do
-  echo "Checking for semaphore"
-  if [[ ! -f "${SEMAPHORE}" ]]; then
-    echo -n "${REPO_DIR}" > "${SEMAPHORE}"
-
-    if [[ $(cat "${SEMAPHORE}") == "${REPO_DIR}" ]]; then
-      echo "Got the semaphore. Setting up gitops repo"
-      break
-    fi
-  fi
-
-  SLEEP_TIME=$((1 + $RANDOM % 10))
-  echo "  Waiting $SLEEP_TIME seconds for semaphore"
-  sleep $SLEEP_TIME
-done
-
-function finish {
-  rm "${SEMAPHORE}"
-}
-
-trap finish EXIT
-
-APPLICATION_REPO_URL="https://${APPLICATION_REPO}"
+REPO_DIR=".tmprepo-argocd-${NAMESPACE}"
 
 git config --global user.email "cloudnativetoolkit@gmail.com"
 git config --global user.name "Cloud-Native Toolkit"
@@ -45,11 +20,11 @@ git clone "https://${TOKEN}@${REPO}" "${REPO_DIR}"
 
 cd "${REPO_DIR}" || exit 1
 
-cat > "${REPO_PATH}/namespaces.yaml" <<EOL
+cat > "${REPO_PATH}/${NAME}.yaml" <<EOL
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: namespaces-${BRANCH}
+  name: ${NAME}-${BRANCH}
 spec:
   destination:
     namespace: ${NAMESPACE}
@@ -57,7 +32,7 @@ spec:
   project: ${PROJECT}
   source:
     path: ${APPLICATION_GIT_PATH}
-    repoURL: ${APPLICATION_REPO_URL}
+    repoURL: https://${APPLICATION_REPO}
     targetRevision: ${BRANCH}
   syncPolicy:
     automated:
@@ -67,7 +42,7 @@ EOL
 
 if [[ $(git status --porcelain | wc -l) -gt 0 ]]; then
   git add .
-  git commit -m "Adds argocd config for namespaces"
+  git commit -m "Adds argocd config for ${NAME}"
   git push
 fi
 
