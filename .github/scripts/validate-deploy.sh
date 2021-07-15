@@ -11,7 +11,7 @@ cd .testrepo || exit 1
 
 find . -name "*"
 
-NAMESPACE=""
+NAMESPACE="gitops-namespace"
 
 if [[ ! -f "argocd/1-infrastructure/active/namespace-${NAMESPACE}.yaml" ]]; then
   echo "Argocd config missing: argocd/1-infrastructure/active/namespace-${NAMESPACE}.yaml"
