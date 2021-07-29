@@ -40,6 +40,26 @@ spec:
       selfHeal: true
 EOL
 
+cat > "${REPO_PATH}/namespaces.yaml" <<EOL
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ${NAME}-${BRANCH}
+spec:
+  destination:
+    namespace: ${NAMESPACE}
+    server: "https://kubernetes.default.svc"
+  project: ${PROJECT}
+  source:
+    path: ${APPLICATION_GIT_PATH}
+    repoURL: https://${APPLICATION_REPO}
+    targetRevision: ${BRANCH}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+EOL
+
 if [[ $(git status --porcelain | wc -l) -gt 0 ]]; then
   git add .
   git commit -m "Adds argocd config for ${NAME}"
