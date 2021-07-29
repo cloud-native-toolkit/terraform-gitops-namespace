@@ -7,6 +7,7 @@ CONTENT_DIR="$2"
 APPLICATION_PATH="$3"
 APPLICATION_BRANCH="$4"
 NAMESPACE="$5"
+NAME="$6"
 
 # Install jq if not available
 JQ=$(command -v jq || command -v ./bin/jq)
@@ -46,7 +47,7 @@ PAYLOAD_REPO=$(echo "${GITOPS_CONFIG}" | ${JQ} -r '.payload.repo')
 
 PAYLOAD_BASE_PATH=$(echo "${GITOPS_CONFIG}" | ${JQ} -r '.payload.path')
 PAYLOAD_PATH="${PAYLOAD_BASE_PATH}/${APPLICATION_PATH}"
-PAYLOAD_PATH2="${PAYLOAD_BASE_PATH}/namespace/${NAMESPACE}"
+PAYLOAD_PATH2="${PAYLOAD_BASE_PATH}/namespace/${NAME}"
 
 PAYLOAD_TOKEN=$(echo "${GIT_CREDENTIALS}" | ${JQ} --arg REPO "${PAYLOAD_REPO}" -r '.[] | select(.repo == $REPO) | .token')
 

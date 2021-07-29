@@ -16,7 +16,7 @@ resource null_resource setup_gitops {
   depends_on = [null_resource.create_yaml]
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/setup-gitops.sh 'namespace-${var.name}' '${local.yaml_dir}' 'namespaces' '${local.application_branch}' '${local.config_namespace}'"
+    command = "${path.module}/scripts/setup-gitops.sh 'namespace-${var.name}' '${local.yaml_dir}' 'namespaces' '${local.application_branch}' '${local.config_namespace}' '${var.name}'"
 
     environment = {
       GIT_CREDENTIALS = jsonencode(var.git_credentials)
