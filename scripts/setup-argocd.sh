@@ -44,7 +44,7 @@ cat > "${REPO_PATH}/namespaces.yaml" <<EOL
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ${NAME}-${BRANCH}
+  name: namespaces-${BRANCH}
 spec:
   destination:
     namespace: ${NAMESPACE}
