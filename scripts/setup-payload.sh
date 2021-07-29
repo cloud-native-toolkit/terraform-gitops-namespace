@@ -8,6 +8,7 @@ REPO_PATH="$3"
 NAMESPACE="$4"
 CONTENT_DIR="$5"
 REPO_PATH2="$6"
+NAMESPACE2="$7"
 
 REPO_DIR=".tmprepo-payload-${NAMESPACE}"
 
@@ -24,7 +25,7 @@ mkdir -p "${REPO_PATH}"
 mkdir -p "${REPO_PATH2}"
 
 cp -R "${CONTENT_DIR}/"* "${REPO_PATH}"
-echo "${NAMESPACE}" > "${REPO_PATH2}/.gitkeep"
+echo "${NAMESPACE2}" > "${REPO_PATH2}/.gitkeep"
 
 git add .
 git commit -m "Adds payload yaml for ${NAME}"

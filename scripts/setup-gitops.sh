@@ -7,7 +7,7 @@ CONTENT_DIR="$2"
 APPLICATION_PATH="$3"
 APPLICATION_BRANCH="$4"
 NAMESPACE="$5"
-NAME="$6"
+NAMESPACE2="$6"
 
 # Install jq if not available
 JQ=$(command -v jq || command -v ./bin/jq)
@@ -47,7 +47,7 @@ PAYLOAD_REPO=$(echo "${GITOPS_CONFIG}" | ${JQ} -r '.payload.repo')
 
 PAYLOAD_BASE_PATH=$(echo "${GITOPS_CONFIG}" | ${JQ} -r '.payload.path')
 PAYLOAD_PATH="${PAYLOAD_BASE_PATH}/${APPLICATION_PATH}"
-PAYLOAD_PATH2="${PAYLOAD_BASE_PATH}/namespace/${NAME}"
+PAYLOAD_PATH2="${PAYLOAD_BASE_PATH}/namespace/${NAMESPACE2}"
 
 PAYLOAD_TOKEN=$(echo "${GIT_CREDENTIALS}" | ${JQ} --arg REPO "${PAYLOAD_REPO}" -r '.[] | select(.repo == $REPO) | .token')
 
@@ -58,7 +58,7 @@ CONFIG_PROJECT=$(echo "${GITOPS_CONFIG}" | ${JQ} -r '."argocd-config".project')
 CONFIG_TOKEN=$(echo "${GIT_CREDENTIALS}" | ${JQ} --arg REPO "${CONFIG_REPO}" -r '.[] | select(.repo == $REPO) | .token')
 
 echo "Setting up payload gitops"
-TOKEN="${PAYLOAD_TOKEN}" "${SCRIPT_DIR}/setup-payload.sh" "${NAME}" "${PAYLOAD_REPO}" "${PAYLOAD_PATH}" "${NAMESPACE}" "${CONTENT_DIR}" "${PAYLOAD_PATH2}"
+TOKEN="${PAYLOAD_TOKEN}" "${SCRIPT_DIR}/setup-payload.sh" "${NAME}" "${PAYLOAD_REPO}" "${PAYLOAD_PATH}" "${NAMESPACE}" "${CONTENT_DIR}" "${PAYLOAD_PATH2}" "${NAMESPACE2}"
 
 echo "Setting up argocd config"
 TOKEN="${CONFIG_TOKEN}" "${SCRIPT_DIR}/setup-argocd.sh" "${NAME}" "${CONFIG_REPO}" "${CONFIG_PATH}" "${CONFIG_PROJECT}" "${PAYLOAD_REPO}" "${PAYLOAD_PATH}" "${NAMESPACE}" "${APPLICATION_BRANCH}"
