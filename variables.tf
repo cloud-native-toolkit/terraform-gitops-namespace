@@ -77,7 +77,7 @@ variable "name" {
   description = "The value that should be used for the namespace"
 }
 
-variable "dev" {
+variable "ci" {
   type        = bool
   description = "Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)"
   default     = false

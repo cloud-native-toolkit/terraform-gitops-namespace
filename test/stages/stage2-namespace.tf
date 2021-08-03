@@ -6,5 +6,5 @@ module "gitops_namespace" {
   name = var.namespace
   argocd_namespace = "openshift-gitops"
   argocd_service_account      = "argocd-cluster-argocd-application-controller"
-  dev = true
+  ci = true
 }

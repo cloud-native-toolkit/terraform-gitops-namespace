@@ -53,12 +53,12 @@ module "rbac" {
   }]
 }
 
-module "dev_config" {
-  source = "github.com/cloud-native-toolkit/terraform-gitops-dev-namespace.git?ref=v1.2.1"
+module "ci_config" {
+  source = "github.com/cloud-native-toolkit/terraform-gitops-ci-namespace.git?ref=v1.2.1"
   depends_on = [module.rbac]
 
   gitops_config             = var.gitops_config
   git_credentials           = var.git_credentials
   namespace                 = var.name
-  provision                 = var.dev
+  provision                 = var.ci
 }
