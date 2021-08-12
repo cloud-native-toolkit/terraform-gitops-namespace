@@ -82,3 +82,9 @@ variable "ci" {
   description = "Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)"
   default     = false
 }
+
+variable "serverName" {
+  type        = string
+  description = "The name of the server"
+  default     = "default"
+}
