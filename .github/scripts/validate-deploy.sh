@@ -11,39 +11,32 @@ cd .testrepo || exit 1
 
 find . -name "*"
 
+SERVER_NAME="default"
 NAMESPACE="gitops-namespace"
 
-if [[ ! -f "argocd/1-infrastructure/active/namespaces.yaml" ]]; then
-  echo "Argocd config missing: argocd/1-infrastructure/active/namespaces.yaml"
+if [[ ! -f "argocd/1-infrastructure/cluster/${SERVER_NAME}/base/namespace-${NAMESPACE}.yaml" ]]; then
+  echo "Argocd config missing: argocd/1-infrastructure/cluster/${SERVER_NAME}/base/namespace-${NAMESPACE}.yaml"
   exit 1
 fi
 
-echo "Printing argocd/1-infrastructure/active/namespaces.yaml"
-cat "argocd/1-infrastructure/active/namespaces.yaml"
+echo "Printing argocd/1-infrastructure/cluster/${SERVER_NAME}/base/namespace-${NAMESPACE}.yaml"
+cat "argocd/1-infrastructure/cluster/${SERVER_NAME}/base/namespace-${NAMESPACE}.yaml"
 
-if [[ ! -f "argocd/1-infrastructure/active/namespace-${NAMESPACE}.yaml" ]]; then
-  echo "Argocd config missing: argocd/1-infrastructure/active/namespace-${NAMESPACE}.yaml"
+if [[ ! -f "argocd/1-infrastructure/cluster/${SERVER_NAME}/kustomization.yaml" ]]; then
+  echo "Argocd config missing: argocd/1-infrastructure/cluster/${SERVER_NAME}/kustomization.yaml"
   exit 1
 fi
 
-echo "Printing argocd/1-infrastructure/active/namespace-${NAMESPACE}.yaml"
-cat "argocd/1-infrastructure/active/namespace-${NAMESPACE}.yaml"
+echo "Printing argocd/1-infrastructure/cluster/${SERVER_NAME}/kustomization.yaml"
+cat "argocd/1-infrastructure/cluster/${SERVER_NAME}/kustomization.yaml"
 
-if [[ ! -f "payload/1-infrastructure/namespaces/${NAMESPACE}.yaml" ]]; then
-  echo "Payload missing: payload/1-infrastructure/namespaces/${NAMESPACE}.yaml"
+if [[ ! -f "payload/1-infrastructure/namespace/${NAMESPACE}/namespace/ns.yaml" ]]; then
+  echo "Payload missing: payload/1-infrastructure/namespace/${NAMESPACE}/namespace/ns.yaml"
   exit 1
 fi
 
-echo "Printing payload/1-infrastructure/namespaces/${NAMESPACE}.yaml"
-cat "payload/1-infrastructure/namespaces/${NAMESPACE}.yaml"
-
-if [[ ! -f "payload/1-infrastructure/namespace/${NAMESPACE}/.gitkeep" ]]; then
-  echo "Payload directory missing: payload/1-infrastructure/namespace/${NAMESPACE}/.gitkeep"
-  exit 1
-fi
-
-echo "Printing payload/1-infrastructure/namespace/${NAMESPACE}/.gitkeep"
-cat "payload/1-infrastructure/namespace/${NAMESPACE}/.gitkeep"
+echo "Printing payload/1-infrastructure/namespace/${NAMESPACE}/namespace/ns.yaml"
+cat "payload/1-infrastructure/namespace/${NAMESPACE}/namespace/ns.yaml"
 
 cd ..
 rm -rf .testrepo
