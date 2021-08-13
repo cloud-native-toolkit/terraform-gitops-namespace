@@ -29,7 +29,7 @@ resource null_resource setup_gitops {
   depends_on = [null_resource.create_yaml]
 
   provisioner "local-exec" {
-    command = "$(command -v igc || command -v ${local.bin_dir}/igc) gitops-namespace ${var.name} --contentDir ${local.yaml_dir} --serverName ${var.serverName}"
+    command = "$(command -v igc || command -v ${local.bin_dir}/igc) gitops-namespace ${var.name} --contentDir ${local.yaml_dir} --serverName ${var.server_name}"
 
     environment = {
       GIT_CREDENTIALS = yamlencode(var.git_credentials)
