@@ -35,7 +35,7 @@ versions:
       moduleRef:
         id: argocd
         output: argocd_service_account
-    - name: serverName
+    - name: server_name
       moduleRef:
         id: gitops
-        output: serverName
+        output: server_name

@@ -39,7 +39,7 @@ resource null_resource setup_gitops {
 }
 
 module "rbac" {
-  source = "github.com/cloud-native-toolkit/terraform-gitops-rbac.git?ref=v1.5.1"
+  source = "github.com/cloud-native-toolkit/terraform-gitops-rbac.git?ref=v1.6.0"
   depends_on = [null_resource.setup_gitops]
 
   gitops_config             = var.gitops_config
@@ -47,7 +47,7 @@ module "rbac" {
   service_account_namespace = var.argocd_namespace
   service_account_name      = var.argocd_service_account
   namespace                 = var.name
-  serverName                = var.serverName
+  server_name               = var.server_name
   rules = [{
     apiGroups = ["apps"]
     resources = ["deployments", "statefulset"]
@@ -68,12 +68,12 @@ module "rbac" {
 }
 
 module "ci_config" {
-  source = "github.com/cloud-native-toolkit/terraform-gitops-ci-namespace.git?ref=v1.3.0"
+  source = "github.com/cloud-native-toolkit/terraform-gitops-ci-namespace.git?ref=v1.3.1"
   depends_on = [module.rbac]
 
-  gitops_config             = var.gitops_config
-  git_credentials           = var.git_credentials
-  namespace                 = var.name
-  provision                 = var.ci
-  serverName                = var.serverName
+  gitops_config   = var.gitops_config
+  git_credentials = var.git_credentials
+  namespace       = var.name
+  provision       = var.ci
+  server_name     = var.server_name
 }
