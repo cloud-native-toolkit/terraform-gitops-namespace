@@ -31,7 +31,7 @@ resource null_resource setup_gitops {
 }
 
 module "rbac" {
-  source = "github.com/cloud-native-toolkit/terraform-gitops-rbac.git?ref=v1.6.0"
+  source = "github.com/cloud-native-toolkit/terraform-gitops-rbac.git?ref=v1.6.1"
   depends_on = [null_resource.setup_gitops]
 
   gitops_config             = var.gitops_config
@@ -60,7 +60,7 @@ module "rbac" {
 }
 
 module "ci_config" {
-  source = "github.com/cloud-native-toolkit/terraform-gitops-ci-namespace.git?ref=v1.4.0"
+  source = "github.com/cloud-native-toolkit/terraform-gitops-ci-namespace.git?ref=v1.4.1"
   depends_on = [module.rbac]
 
   gitops_config   = var.gitops_config
