@@ -60,7 +60,7 @@ module "rbac" {
 }
 
 module "ci_config" {
-  source = "github.com/cloud-native-toolkit/terraform-gitops-ci-namespace.git?ref=v1.4.1"
+  source = "github.com/cloud-native-toolkit/terraform-gitops-ci-namespace.git?ref=v1.4.2"
   depends_on = [module.rbac]
 
   gitops_config   = var.gitops_config
