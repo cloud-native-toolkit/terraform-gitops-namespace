@@ -11,13 +11,6 @@ versions:
       refs:
         - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
           version: ">= 1.1.0"
-    - id: argocd
-      refs:
-        - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-          version: ">= 1.0.0"
-        - source: github.com/cloud-native-toolkit/terraform-vsi-argocd-bootstrap.git
-          version: ">= 1.0.0"
-      optional: true
   variables:
     - name: gitops_config
       moduleRef:
@@ -27,14 +20,6 @@ versions:
       moduleRef:
         id: gitops
         output: git_credentials
-    - name: argocd_namespace
-      moduleRef:
-        id: argocd
-        output: argocd_namespace
-    - name: argocd_service_account
-      moduleRef:
-        id: argocd
-        output: argocd_service_account
     - name: server_name
       moduleRef:
         id: gitops

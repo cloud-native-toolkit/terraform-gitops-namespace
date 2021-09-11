@@ -30,38 +30,9 @@ resource null_resource setup_gitops {
   }
 }
 
-module "rbac" {
-  source = "github.com/cloud-native-toolkit/terraform-gitops-rbac.git?ref=v1.6.1"
-  depends_on = [null_resource.setup_gitops]
-
-  gitops_config             = var.gitops_config
-  git_credentials           = var.git_credentials
-  service_account_namespace = var.argocd_namespace
-  service_account_name      = var.argocd_service_account
-  namespace                 = var.name
-  server_name               = var.server_name
-  rules = [{
-    apiGroups = ["apps"]
-    resources = ["deployments", "statefulset"]
-    verbs = ["*"]
-  }, {
-    apiGroups = [""]
-    resources = ["secrets", "configmaps", "serviceaccounts", "services"]
-    verbs = ["*"]
-  }, {
-    apiGroups = ["batch"]
-    resources = ["cronjobs","jobs"]
-    verbs = ["*"]
-  }, {
-    apiGroups = ["route.openshift.io"]
-    resources = ["routes"]
-    verbs = ["*"]
-  }]
-}
-
 module "ci_config" {
   source = "github.com/cloud-native-toolkit/terraform-gitops-ci-namespace.git?ref=v1.4.2"
-  depends_on = [module.rbac]
+  depends_on = [null_resource.setup_gitops]
 
   gitops_config   = var.gitops_config
   git_credentials = var.git_credentials
