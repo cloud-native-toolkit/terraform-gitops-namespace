@@ -24,14 +24,14 @@ resource null_resource setup_gitops {
     command = "${local.bin_dir}/igc gitops-namespace ${var.name} --contentDir ${local.yaml_dir} --serverName ${var.server_name}"
 
     environment = {
-      GIT_CREDENTIALS = yamlencode(var.git_credentials)
+      GIT_CREDENTIALS = nonsensitive(yamlencode(var.git_credentials))
       GITOPS_CONFIG   = yamlencode(var.gitops_config)
     }
   }
 }
 
 module "ci_config" {
-  source = "github.com/cloud-native-toolkit/terraform-gitops-ci-namespace.git?ref=v1.4.2"
+  source = "github.com/cloud-native-toolkit/terraform-gitops-ci-namespace.git?ref=v1.4.3"
   depends_on = [null_resource.setup_gitops]
 
   gitops_config   = var.gitops_config
