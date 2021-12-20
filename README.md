@@ -34,6 +34,7 @@ module "gitops_namespace" {
   application_token = module.gitops.application_token
   application_paths = module.gitops.application_paths
   name = var.namespace
+  create_operator_group = false
 }
 ```
 

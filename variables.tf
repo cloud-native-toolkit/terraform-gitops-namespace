@@ -78,3 +78,9 @@ variable "server_name" {
   description = "The name of the server"
   default     = "default"
 }
+
+variable "create_operator_group" {
+  type        = bool
+  description = "Flag indicating that an operator group should be created in the namespace"
+  default     = true
+}
