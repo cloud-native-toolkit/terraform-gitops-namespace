@@ -9,7 +9,7 @@ module setup_clis {
 
 resource null_resource create_yaml {
   provisioner "local-exec" {
-    command = "${path.module}/scripts/create-yaml.sh '${local.yaml_dir}' '${var.name}' '${var.create_operator_group}'"
+    command = "${path.module}/scripts/create-yaml.sh '${local.yaml_dir}' '${var.name}' '${var.create_operator_group}' '${var.argocd_namespace}'"
 
     environment = {
       BIN_DIR = local.bin_dir
