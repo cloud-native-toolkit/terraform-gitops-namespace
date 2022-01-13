@@ -24,7 +24,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "-20"
 rules:
-  - apiGroup:
+  - apiGroups:
     - "*"
     resources:
     - "*"
