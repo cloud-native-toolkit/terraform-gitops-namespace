@@ -21,6 +21,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: argocd-admin
+  namespace: ${NAMESPACE}
   annotations:
     argocd.argoproj.io/sync-wave: "-20"
 roleRef:
