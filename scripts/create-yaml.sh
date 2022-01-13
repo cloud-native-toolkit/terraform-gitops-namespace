@@ -5,8 +5,6 @@ NAMESPACE="$2"
 CREATEOG="$3"
 ARGOCD_NAMESPACE="$4"
 
-ARGOCD_SA="openshift-gitops-argocd-application-controller"
-
 mkdir -p "${YAML_DIR}"
 
 cat > "${YAML_DIR}/ns.yaml" <<EOL
@@ -15,24 +13,10 @@ kind: Namespace
 metadata:
   name: $NAMESPACE
   annotations:
-    argocd.argoproj.io/sync-wave: "-20"
+    argocd.argoproj.io/sync-wave: "-30"
 EOL
 
 cat > "${YAML_DIR}/rbac.yaml" <<EOL
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: argocd-admin
-  annotations:
-    argocd.argoproj.io/sync-wave: "-20"
-rules:
-  - apiGroups:
-    - "*"
-    resources:
-    - "*"
-    verbs:
-    - "*"
----
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -41,15 +25,12 @@ metadata:
     argocd.argoproj.io/sync-wave: "-20"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: argocd-admin
+  kind: ClusterRole
+  name: admin
 subjects:
 - apiGroup: rbac.authorization.k8s.io
   kind: Group
   name: system:serviceaccounts:${ARGOCD_NAMESPACE}
-- kind: ServiceAccount
-  name: ${ARGOCD_SA}
-  namespace: ${ARGOCD_NAMESPACE}
 EOL
 
 if [[ "${CREATEOG}" == "true" ]]; then
