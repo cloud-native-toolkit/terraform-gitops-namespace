@@ -3,6 +3,7 @@
 YAML_DIR="$1"
 NAMESPACE="$2"
 CREATEOG="$3"
+ARGOCD_NAMESPACE="$4"
 
 mkdir -p "${YAML_DIR}"
 
@@ -13,6 +14,21 @@ metadata:
   name: $NAMESPACE
   annotations:
     argocd.argoproj.io/sync-wave: "-10"
+EOL
+
+cat > "${YAML_DIR}/rbac.yaml" <<EOL
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argocd-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: system:serviceaccounts:${ARGOCD_NAMESPACE}
 EOL
 
 if [[ "${CREATEOG}" == "true" ]]; then

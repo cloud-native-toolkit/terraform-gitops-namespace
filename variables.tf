@@ -84,3 +84,9 @@ variable "create_operator_group" {
   description = "Flag indicating that an operator group should be created in the namespace"
   default     = true
 }
+
+variable "argocd_namespace" {
+  type        = string
+  description = "The namespace where argocd has been deployed"
+  default     = "openshift-gitops"
+}
