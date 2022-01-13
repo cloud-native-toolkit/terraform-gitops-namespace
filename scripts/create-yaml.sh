@@ -13,20 +13,34 @@ kind: Namespace
 metadata:
   name: $NAMESPACE
   annotations:
-    argocd.argoproj.io/sync-wave: "-10"
+    argocd.argoproj.io/sync-wave: "-20"
 EOL
 
 cat > "${YAML_DIR}/rbac.yaml" <<EOL
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: argocd-admin
+  annotations:
+    argocd.argoproj.io/sync-wave: "-20"
+rules:
+  - apiGroup:
+    - "*"
+    resources:
+    - "*"
+    verbs:
+    - "*"
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: argocd-admin
   annotations:
-    argocd.argoproj.io/sync-wave: "-10"
+    argocd.argoproj.io/sync-wave: "-20"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: admin
+  kind: Role
+  name: argocd-admin
 subjects:
 - apiGroup: rbac.authorization.k8s.io
   kind: Group
@@ -42,7 +56,7 @@ metadata:
   name: ${NAMESPACE}-operator-group
   namespace: ${NAMESPACE}
   annotations:
-    argocd.argoproj.io/sync-wave: "-10"
+    argocd.argoproj.io/sync-wave: "-20"
 spec:
   targetNamespaces:
     - ${NAMESPACE}
