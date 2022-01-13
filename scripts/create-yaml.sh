@@ -5,6 +5,8 @@ NAMESPACE="$2"
 CREATEOG="$3"
 ARGOCD_NAMESPACE="$4"
 
+ARGOCD_SA="openshift-gitops-argocd-application-controller"
+
 mkdir -p "${YAML_DIR}"
 
 cat > "${YAML_DIR}/ns.yaml" <<EOL
@@ -45,6 +47,9 @@ subjects:
 - apiGroup: rbac.authorization.k8s.io
   kind: Group
   name: system:serviceaccounts:${ARGOCD_NAMESPACE}
+- kind: ServiceAccount
+  name: ${ARGOCD_SA}
+  namespace: ${ARGOCD_NAMESPACE}
 EOL
 
 if [[ "${CREATEOG}" == "true" ]]; then
