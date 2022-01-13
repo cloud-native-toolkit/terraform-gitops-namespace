@@ -106,6 +106,110 @@ versions:
         description: The namespace where argocd has been deployed
         default: openshift-gitops
         optional: true
+    version: v1.10.3
+    outputs:
+      - name: name
+        description: Namespace name
+  - platforms: []
+    dependencies:
+      - id: gitops
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
+            version: ">= 1.1.0"
+    variables:
+      - name: gitops_config
+        moduleRef:
+          id: gitops
+          output: gitops_config
+        type: |-
+          object({
+              boostrap = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+              infrastructure = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+                payload = object({
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+              services = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+                payload = object({
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+              applications = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+                payload = object({
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+            })
+        description: Config information regarding the gitops repo structure
+      - name: git_credentials
+        moduleRef:
+          id: gitops
+          output: git_credentials
+        type: |-
+          list(object({
+              repo = string
+              url = string
+              username = string
+              token = string
+            }))
+        description: The credentials for the gitops repo(s)
+      - name: server_name
+        moduleRef:
+          id: gitops
+          output: server_name
+        type: string
+        description: The name of the server
+        default: default
+        optional: true
+      - name: name
+        type: string
+        description: The value that should be used for the namespace
+      - name: ci
+        type: bool
+        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        default: false
+        optional: true
+      - name: create_operator_group
+        type: bool
+        description: Flag indicating that an operator group should be created in the namespace
+        default: true
+        optional: true
+      - name: argocd_namespace
+        type: string
+        description: The namespace where argocd has been deployed
+        default: openshift-gitops
+        optional: true
     version: v1.10.2
     outputs:
       - name: name
