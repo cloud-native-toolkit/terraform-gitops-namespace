@@ -11,7 +11,112 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
+    variables:
+      - name: gitops_config
+        type: |-
+          object({
+              boostrap = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+              infrastructure = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+                payload = object({
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+              services = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+                payload = object({
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+              applications = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+                payload = object({
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+            })
+        description: Config information regarding the gitops repo structure
+        moduleRef:
+          id: gitops
+          output: gitops_config
+      - name: git_credentials
+        type: |-
+          list(object({
+              repo = string
+              url = string
+              username = string
+              token = string
+            }))
+        description: The credentials for the gitops repo(s)
+        sensitive: true
+        moduleRef:
+          id: gitops
+          output: git_credentials
+      - name: name
+        type: string
+        description: The value that should be used for the namespace
+      - name: ci
+        type: bool
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
+        default: false
+      - name: server_name
+        type: string
+        description: The name of the server
+        default: default
+        moduleRef:
+          id: gitops
+          output: server_name
+      - name: create_operator_group
+        type: bool
+        description: >-
+          Flag indicating that an operator group should be created in the
+          namespace
+        default: true
+      - name: argocd_namespace
+        type: string
+        description: The namespace where argocd has been deployed
+        default: openshift-gitops
+    version: v1.11.0
+    outputs:
+      - name: name
+        description: Namespace name
+  - platforms: []
+    dependencies:
+      - id: gitops
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
+            version: '>= 1.1.0'
     variables:
       - name: gitops_config
         moduleRef:
@@ -93,12 +198,16 @@ versions:
         description: The value that should be used for the namespace
       - name: ci
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
       - name: create_operator_group
         type: bool
-        description: Flag indicating that an operator group should be created in the namespace
+        description: >-
+          Flag indicating that an operator group should be created in the
+          namespace
         default: true
         optional: true
       - name: argocd_namespace
@@ -115,7 +224,7 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
     variables:
       - name: gitops_config
         moduleRef:
@@ -197,12 +306,16 @@ versions:
         description: The value that should be used for the namespace
       - name: ci
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
       - name: create_operator_group
         type: bool
-        description: Flag indicating that an operator group should be created in the namespace
+        description: >-
+          Flag indicating that an operator group should be created in the
+          namespace
         default: true
         optional: true
       - name: argocd_namespace
@@ -219,7 +332,7 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
     variables:
       - name: gitops_config
         moduleRef:
@@ -301,12 +414,16 @@ versions:
         description: The value that should be used for the namespace
       - name: ci
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
       - name: create_operator_group
         type: bool
-        description: Flag indicating that an operator group should be created in the namespace
+        description: >-
+          Flag indicating that an operator group should be created in the
+          namespace
         default: true
         optional: true
       - name: argocd_namespace
@@ -323,7 +440,7 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
     variables:
       - name: gitops_config
         moduleRef:
@@ -405,12 +522,16 @@ versions:
         description: The value that should be used for the namespace
       - name: ci
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
       - name: create_operator_group
         type: bool
-        description: Flag indicating that an operator group should be created in the namespace
+        description: >-
+          Flag indicating that an operator group should be created in the
+          namespace
         default: true
         optional: true
       - name: argocd_namespace
@@ -427,7 +548,7 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
     variables:
       - name: gitops_config
         moduleRef:
@@ -509,12 +630,16 @@ versions:
         description: The value that should be used for the namespace
       - name: ci
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
       - name: create_operator_group
         type: bool
-        description: Flag indicating that an operator group should be created in the namespace
+        description: >-
+          Flag indicating that an operator group should be created in the
+          namespace
         default: true
         optional: true
       - name: argocd_namespace
@@ -531,7 +656,7 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
     variables:
       - name: gitops_config
         moduleRef:
@@ -613,12 +738,16 @@ versions:
         description: The value that should be used for the namespace
       - name: ci
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
       - name: create_operator_group
         type: bool
-        description: Flag indicating that an operator group should be created in the namespace
+        description: >-
+          Flag indicating that an operator group should be created in the
+          namespace
         default: true
         optional: true
       - name: argocd_namespace
@@ -635,7 +764,7 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
     variables:
       - name: gitops_config
         moduleRef:
@@ -717,12 +846,16 @@ versions:
         description: The value that should be used for the namespace
       - name: ci
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
       - name: create_operator_group
         type: bool
-        description: Flag indicating that an operator group should be created in the namespace
+        description: >-
+          Flag indicating that an operator group should be created in the
+          namespace
         default: true
         optional: true
     version: v1.10.0
@@ -734,7 +867,7 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
     variables:
       - name: gitops_config
         moduleRef:
@@ -816,7 +949,9 @@ versions:
         description: The value that should be used for the namespace
       - name: ci
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
     version: v1.9.1
@@ -828,7 +963,7 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
     variables:
       - name: gitops_config
         moduleRef:
@@ -910,7 +1045,9 @@ versions:
         description: The value that should be used for the namespace
       - name: ci
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
     version: v1.9.0
@@ -922,13 +1059,14 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-vsi-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: gitops_config
@@ -1023,7 +1161,9 @@ versions:
         description: The value that should be used for the namespace
       - name: ci
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
     version: v1.8.3
@@ -1035,13 +1175,14 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-vsi-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: gitops_config
@@ -1136,7 +1277,9 @@ versions:
         description: The value that should be used for the namespace
       - name: ci
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
     version: v1.8.2
@@ -1148,13 +1291,14 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-vsi-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: gitops_config
@@ -1249,7 +1393,9 @@ versions:
         description: The value that should be used for the namespace
       - name: ci
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
     version: v1.8.1
@@ -1261,13 +1407,14 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-vsi-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: gitops_config
@@ -1362,7 +1509,9 @@ versions:
         description: The value that should be used for the namespace
       - name: ci
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
     version: v1.8.0
@@ -1374,13 +1523,14 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-vsi-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: gitops_config
@@ -1475,7 +1625,9 @@ versions:
         description: The value that should be used for the namespace
       - name: ci
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
     version: v1.7.2
@@ -1487,13 +1639,14 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-vsi-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: gitops_config
@@ -1588,7 +1741,9 @@ versions:
         description: The value that should be used for the namespace
       - name: ci
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
     version: v1.7.1
@@ -1600,13 +1755,14 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-vsi-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: gitops_config
@@ -1701,7 +1857,9 @@ versions:
         description: The value that should be used for the namespace
       - name: ci
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
     version: v1.7.0
@@ -1713,13 +1871,14 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-vsi-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: gitops_config
@@ -1806,7 +1965,9 @@ versions:
         description: The value that should be used for the namespace
       - name: ci
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
     version: v1.6.0
@@ -1818,13 +1979,14 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-vsi-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: gitops_config
@@ -1911,7 +2073,9 @@ versions:
         description: The value that should be used for the namespace
       - name: dev
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
     version: v1.5.3
@@ -1923,15 +2087,17 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-tools-argocd.git
-            version: ">= 1.0.0"
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: gitops_config
@@ -2018,7 +2184,9 @@ versions:
         description: The value that should be used for the namespace
       - name: dev
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
     version: v1.5.2
@@ -2030,15 +2198,17 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-tools-argocd.git
-            version: ">= 1.0.0"
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: gitops_config
@@ -2125,7 +2295,9 @@ versions:
         description: The value that should be used for the namespace
       - name: dev
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
     version: v1.5.1
@@ -2137,15 +2309,17 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-tools-argocd.git
-            version: ">= 1.0.0"
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: gitops_config
@@ -2232,7 +2406,9 @@ versions:
         description: The value that should be used for the namespace
       - name: dev
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
     version: v1.5.0
@@ -2244,15 +2420,17 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-tools-argocd.git
-            version: ">= 1.0.0"
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: config_repo
@@ -2329,7 +2507,9 @@ versions:
         description: The value that should be used for the namespace
       - name: dev
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
     version: v1.4.1
@@ -2341,15 +2521,17 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-tools-argocd.git
-            version: ">= 1.0.0"
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: config_repo
@@ -2426,7 +2608,9 @@ versions:
         description: The value that should be used for the namespace
       - name: dev
         type: bool
-        description: Flag indicating that this namespace will be used for development (e.g. configmaps and secrets)
+        description: >-
+          Flag indicating that this namespace will be used for development (e.g.
+          configmaps and secrets)
         default: false
         optional: true
     version: v1.4.0
@@ -2438,15 +2622,17 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-tools-argocd.git
-            version: ">= 1.0.0"
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: config_repo
@@ -2530,15 +2716,17 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-tools-argocd.git
-            version: ">= 1.0.0"
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: config_repo
@@ -2622,15 +2810,17 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-tools-argocd.git
-            version: ">= 1.0.0"
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: config_repo
@@ -2714,15 +2904,17 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-tools-argocd.git
-            version: ">= 1.0.0"
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: config_repo
@@ -2806,13 +2998,14 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
       - id: argocd
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
-            version: ">= 1.0.0"
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-tools-openshift-gitops.git
+            version: '>= 1.0.0'
           - source: github.com/cloud-native-toolkit/terraform-tools-argocd.git
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
         optional: true
     variables:
       - name: config_repo
@@ -2896,7 +3089,7 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 1.1.0"
+            version: '>= 1.1.0'
     variables:
       - name: config_repo
         moduleRef:
@@ -2967,7 +3160,7 @@ versions:
       - id: gitops
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
-            version: ">= 0.0.0"
+            version: '>= 0.0.0'
     variables:
       - name: config_repo
         moduleRef:
@@ -3027,19 +3220,5 @@ versions:
       - ocp3
       - ocp4
     dependencies: []
-    #    - id: cluster
-    #      refs:
-    #        - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-    #          version: ">= 1.7.0"
-    #        - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-    #          version: ">= 2.0.0"
-    #    - id: namespace
-    #      refs:
-    #        - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
-    #          version: ">= 2.1.0"
-    #    - id: dashboard
-    #      refs:
-    #        - source: github.com/ibm-garage-cloud/terraform-k8s-dashboard
-    #          version: ">= 1.6.0"
     variables: []
     version: v0.0.0
