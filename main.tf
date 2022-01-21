@@ -41,7 +41,7 @@ resource null_resource setup_gitops {
 
   provisioner "local-exec" {
     when = destroy
-    command = "${local.bin_dir}/igc gitops-namespace ${var.name} --delete --contentDir ${local.yaml_dir} --serverName ${var.server_name}"
+    command = "${self.triggers.bin_dir}/igc gitops-namespace ${self.triggers.name} --delete --contentDir ${self.triggers.yaml_dir} --serverName ${self.triggers.server_name}"
 
     environment = {
       GIT_CREDENTIALS = nonsensitive(self.triggers.git_credentials)
