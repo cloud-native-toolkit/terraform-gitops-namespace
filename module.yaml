@@ -1,4 +1,5 @@
 name: gitops-namespace
+alias: namespace
 type: terraform
 description: Module to configure the provisioning of a namespace in a GitOps repo
 tags:
