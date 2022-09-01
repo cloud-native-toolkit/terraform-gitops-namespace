@@ -19,7 +19,6 @@ resource null_resource create_yaml {
   }
 }
 
-
 resource gitops_namespace ns {
   depends_on = [null_resource.create_yaml]
 
@@ -32,7 +31,7 @@ resource gitops_namespace ns {
 }
 
 module "ci_config" {
-  source = "github.com/cloud-native-toolkit/terraform-gitops-ci-namespace.git?ref=provider"
+  source = "github.com/cloud-native-toolkit/terraform-gitops-ci-namespace.git?ref=v1.6.0"
   depends_on = [gitops_namespace.ns]
 
   gitops_config   = var.gitops_config
