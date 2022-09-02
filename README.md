@@ -1,5 +1,5 @@
 # Namespace gitops config
-
+ 
 Module to configure a GitOps repo to provision a namespace
 
 
