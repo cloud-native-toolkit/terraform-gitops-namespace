@@ -1,7 +1,4 @@
 output "name" {
-  value       = var.name
+  value       = gitops_namespace.ns.name
   description = "Namespace name"
-  depends_on  = [
-    module.ci_config
-  ]
 }
