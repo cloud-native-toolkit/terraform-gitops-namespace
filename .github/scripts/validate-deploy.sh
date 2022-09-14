@@ -17,7 +17,7 @@ find . -name "*"
 
 NAMESPACE="gitops-namespace"
 
-validate_gitops_namespace "${NAMESPACE}"
+validate_gitops_ns_content "${NAMESPACE}"
 
 cd ..
 rm -rf .testrepo

@@ -1,5 +1,31 @@
 #!/usr/bin/env bash
 
+validate_gitops_ns_content () {
+  local NS="$1"
+  local GITOPS_SERVER_NAME="${2:-default}"
+  local PAYLOAD_FILE="${3:-Chart.yaml}"
+  local GITOPS_LAYER="1-infrastructure"
+  local GITOPS_TYPE="base"
+
+  echo "Validating: namespace=${NS}, layer=${GITOPS_LAYER}, server=${GITOPS_SERVER_NAME}, type=${GITOPS_TYPE}"
+
+  if [[ ! -f "argocd/${GITOPS_LAYER}/cluster/${GITOPS_SERVER_NAME}/${GITOPS_TYPE}/namespace-${NS}.yaml" ]]; then
+    echo "ArgoCD config missing - argocd/${GITOPS_LAYER}/cluster/${GITOPS_SERVER_NAME}/${GITOPS_TYPE}/namespace-${NS}.yaml" >&2
+    exit 1
+  fi
+
+  echo "Printing argocd/${GITOPS_LAYER}/cluster/${GITOPS_SERVER_NAME}/${GITOPS_TYPE}/namespace-${NS}.yaml"
+  cat "argocd/${GITOPS_LAYER}/cluster/${GITOPS_SERVER_NAME}/${GITOPS_TYPE}/namespace-${NS}.yaml"
+
+  if [[ ! -f "payload/${GITOPS_LAYER}/namespace/${NS}/namespace/${PAYLOAD_FILE}" ]]; then
+    echo "Application payload not found - payload/${GITOPS_LAYER}/namespace/${NS}/namespace/${PAYLOAD_FILE}" >&2
+    exit 1
+  fi
+
+  echo "Printing payload/${GITOPS_LAYER}/namespace/${NS}/namespace/${PAYLOAD_FILE}"
+  cat "payload/${GITOPS_LAYER}/namespace/${NS}/namespace/${PAYLOAD_FILE}"
+}
+
 validate_gitops_content () {
   local NS="$1"
   local GITOPS_LAYER="$2"
@@ -25,32 +51,6 @@ validate_gitops_content () {
 
   echo "Printing payload/${GITOPS_LAYER}/namespace/${NS}/${GITOPS_COMPONENT_NAME}/${PAYLOAD_FILE}"
   cat "payload/${GITOPS_LAYER}/namespace/${NS}/${GITOPS_COMPONENT_NAME}/${PAYLOAD_FILE}"
-}
-
-validate_gitops_namespace () {
-  local NS="$1"
-  local GITOPS_SERVER_NAME="${2:-default}"
-  local GITOPS_LAYER="${3:-1-infrastructure}"
-  local GITOPS_TYPE="${4:-base}"
-  local PAYLOAD_FILE="${5:-Chart.yaml}"
-
-  echo "Validating: namespace=${NS}"
-
-  if [[ ! -f "argocd/${GITOPS_LAYER}/cluster/${GITOPS_SERVER_NAME}/${GITOPS_TYPE}/namespace-${NS}.yaml" ]]; then
-    echo "ArgoCD config missing - argocd/${GITOPS_LAYER}/cluster/${GITOPS_SERVER_NAME}/${GITOPS_TYPE}/namespace-${NS}.yaml" >&2
-    exit 1
-  fi
-
-  echo "Printing argocd/${GITOPS_LAYER}/cluster/${GITOPS_SERVER_NAME}/${GITOPS_TYPE}/namespace-${NS}.yaml"
-  cat "argocd/${GITOPS_LAYER}/cluster/${GITOPS_SERVER_NAME}/${GITOPS_TYPE}/namespace-${NS}.yaml"
-
-  if [[ ! -f "payload/${GITOPS_LAYER}/namespace/${NS}/namespace/${PAYLOAD_FILE}" ]]; then
-    echo "Application values not found - payload/${GITOPS_LAYER}/namespace/${NS}/namespace/${PAYLOAD_FILE}" >&2
-    exit 1
-  fi
-
-  echo "Printing payload/${GITOPS_LAYER}/namespace/${NS}/namespace/${PAYLOAD_FILE}"
-  cat "payload/${GITOPS_LAYER}/namespace/${NS}/namespace/${PAYLOAD_FILE}"
 }
 
 check_k8s_namespace () {
