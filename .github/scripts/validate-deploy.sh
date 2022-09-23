@@ -15,30 +15,16 @@ cd .testrepo || exit 1
 
 find . -name "*"
 
-NAMESPACE="gitops-namespace"
+NAMESPACE=$(jq -r '.name // "gitops-namespace"' gitops-output.json)
+BRANCH=$(jq -r '.branch // "main"' gitops-output.json)
+SERVER_NAME=$(jq -r '.server_name // "default"' gitops-output.json)
+LAYER=$(jq -r '.layer_dir // "2-services"' gitops-output.json)
+TYPE=$(jq -r '.type // "base"' gitops-output.json)
 
 validate_gitops_ns_content "${NAMESPACE}"
 
 cd ..
 rm -rf .testrepo
 
-count=0
-until kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null || [[ $count -eq 20 ]]; do
-  echo "Waiting for namespace: ${NAMESPACE}"
-  count=$((count + 1))
-  sleep 15
-done
-
-if [[ $count -eq 20 ]]; then
-  echo "Timed out waiting for namespace: ${NAMESPACE}"
-  exit 1
-else
-  echo "Found namespace: ${NAMESPACE}. Sleeping for 30 seconds to wait for everything to settle down"
-  sleep 30
-fi
-
-if ! kubectl get rolebinding -n "${NAMESPACE}" argocd-admin 1> /dev/null 2> /dev/null; then
-  echo "Unable to find rolebinding: ${NAMESPACE}/argocd-admin"
-  kubectl get rolebinding -n "${NAMESPACE}"
-  exit 1
-fi
+check_k8s_namespace "${NAMESPACE}"
+check_k8s_resource "${NAMESPACE}" rolebinding argocd-admin

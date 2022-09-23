@@ -1,6 +1,8 @@
 locals {
   application_branch = "main"
   create_operator_group = var.name != "openshift-operators" && var.create_operator_group
+  layer = "infrastructure"
+  type = "base"
 }
 
 resource gitops_namespace ns {

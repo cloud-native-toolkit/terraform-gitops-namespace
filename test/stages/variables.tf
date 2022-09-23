@@ -81,3 +81,6 @@ variable "gitops_namespace" {
 
 variable "git_username" {
 }
+
+variable "test_namespace" {
+}
