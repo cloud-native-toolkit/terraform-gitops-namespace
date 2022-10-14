@@ -1,7 +1,5 @@
 output "name" {
   value       = var.name
   description = "Namespace name"
-  depends_on  = [
-    module.ci_config
-  ]
+  depends_on  = [null_resource.setup_gitops]
 }
