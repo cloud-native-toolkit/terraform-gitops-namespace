@@ -10,7 +10,7 @@ module setup_clis {
 
 resource null_resource create_yaml {
   provisioner "local-exec" {
-    command = "${path.module}/scripts/create-yaml.sh '${local.yaml_dir}' '${var.name}' '${local.create_operator_group}' '${var.argocd_namespace}'"
+    command = "${path.module}/scripts/create-yaml.sh '${local.yaml_dir}' '${local.create_operator_group}' '${var.argocd_namespace}' '${var.ci}'"
 
     environment = {
       BIN_DIR = local.bin_dir
@@ -28,10 +28,11 @@ resource null_resource setup_gitops {
     git_credentials = yamlencode(var.git_credentials)
     gitops_config   = yamlencode(var.gitops_config)
     bin_dir = local.bin_dir
+    chart_version = "0.2.0"
   }
 
   provisioner "local-exec" {
-    command = "${self.triggers.bin_dir}/igc gitops-namespace ${self.triggers.name} --contentDir ${self.triggers.yaml_dir} --serverName ${self.triggers.server_name}"
+    command = "${self.triggers.bin_dir}/igc gitops-namespace ${self.triggers.name} --serverName ${self.triggers.server_name} --helmRepoUrl https://charts.cloudnativetoolkit.dev --helmChart namespace --helmChartVersion ${self.triggers.chart_version} --valueFiles ${self.triggers.yaml_dir}/values.yaml"
 
     environment = {
       GIT_CREDENTIALS = nonsensitive(self.triggers.git_credentials)
@@ -50,13 +51,3 @@ resource null_resource setup_gitops {
   }
 }
 
-module "ci_config" {
-  source = "github.com/cloud-native-toolkit/terraform-gitops-ci-namespace.git?ref=v1.5.0"
-  depends_on = [null_resource.setup_gitops]
-
-  gitops_config   = var.gitops_config
-  git_credentials = var.git_credentials
-  namespace       = var.name
-  provision       = var.ci
-  server_name     = var.server_name
-}

@@ -32,21 +32,22 @@ fi
 echo "Printing argocd/1-infrastructure/cluster/${SERVER_NAME}/kustomization.yaml"
 cat "argocd/1-infrastructure/cluster/${SERVER_NAME}/kustomization.yaml"
 
-if [[ ! -f "payload/1-infrastructure/namespace/${NAMESPACE}/namespace/ns.yaml" ]]; then
-  echo "Payload missing: payload/1-infrastructure/namespace/${NAMESPACE}/namespace/ns.yaml"
+
+if [[ ! -f "payload/1-infrastructure/namespace/${NAMESPACE}/namespace/Chart.yaml" ]]; then
+  echo "Payload missing: payload/1-infrastructure/namespace/${NAMESPACE}/namespace/Chart.yaml"
   exit 1
 fi
 
-echo "Printing payload/1-infrastructure/namespace/${NAMESPACE}/namespace/ns.yaml"
-cat "payload/1-infrastructure/namespace/${NAMESPACE}/namespace/ns.yaml"
+echo "Printing payload/1-infrastructure/namespace/${NAMESPACE}/namespace/Chart.yaml"
+cat "payload/1-infrastructure/namespace/${NAMESPACE}/namespace/Chart.yaml"
 
-if [[ ! -f "payload/1-infrastructure/namespace/${NAMESPACE}/namespace/rbac.yaml" ]]; then
-  echo "Payload missing: payload/1-infrastructure/namespace/${NAMESPACE}/namespace/rbac.yaml"
+if [[ ! -f "payload/1-infrastructure/namespace/${NAMESPACE}/namespace/values.yaml" ]]; then
+  echo "Payload missing: payload/1-infrastructure/namespace/${NAMESPACE}/namespace/values.yaml"
   exit 1
 fi
 
-echo "Printing payload/1-infrastructure/namespace/${NAMESPACE}/namespace/rbac.yaml"
-cat "payload/1-infrastructure/namespace/${NAMESPACE}/namespace/rbac.yaml"
+echo "Printing payload/1-infrastructure/namespace/${NAMESPACE}/namespace/values.yaml"
+cat "payload/1-infrastructure/namespace/${NAMESPACE}/namespace/values.yaml"
 
 cd ..
 rm -rf .testrepo
