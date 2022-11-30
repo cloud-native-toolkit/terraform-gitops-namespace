@@ -10,7 +10,7 @@ resource gitops_namespace ns {
   dev_namespace = var.ci
   server_name = var.server_name
   branch = var.branch
-  config = var.gitops_config
-  credentials = var.git_credentials
+  config = jsonencode(var.gitops_config)
+  credentials = jsonencode(var.git_credentials)
   tmp_dir = local.tmp_dir
 }
