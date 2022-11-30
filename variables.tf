@@ -91,3 +91,9 @@ variable "argocd_namespace" {
   description = "The namespace where argocd has been deployed"
   default     = "openshift-gitops"
 }
+
+variable "branch" {
+  type        = string
+  description = "The branch in the gitops repo where the resources should be placed"
+  default     = "main"
+}

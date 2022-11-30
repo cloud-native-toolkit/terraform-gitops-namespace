@@ -3,6 +3,10 @@
 GIT_REPO=$(cat git_repo)
 GIT_TOKEN=$(cat git_token)
 
+BIN_DIR=$(cat .bin_dir)
+
+export PATH="${BIN_DIR}:${PATH}"
+
 export KUBECONFIG=$(cat .kubeconfig)
 
 mkdir -p .testrepo
